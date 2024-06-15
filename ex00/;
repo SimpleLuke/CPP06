@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:07:43 by llai              #+#    #+#             */
-/*   Updated: 2024/06/15 20:02:47 by llai             ###   ########.fr       */
+/*   Updated: 2024/06/15 19:46:34 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,18 @@
 #include <limits>
 #include <stdexcept>
 
-static void printMsg(char &charValue, int &intValue, float &floatValue, double &doubleValue)
+static void printCharLiteral(const std::string &literal)
 {
+  char charValue;
+  int intValue;
+  float floatValue = 0.0;
+  double doubleValue = 0.0;
+
+  charValue = literal[0];
+  intValue = static_cast<int>(charValue);
+  floatValue = static_cast<float>(charValue);
+  doubleValue = static_cast<double>(charValue);
+
   if (std::isprint(charValue))
   {
     std::cout << "char: '" << charValue << "'" << std::endl;
@@ -35,22 +45,6 @@ static void printMsg(char &charValue, int &intValue, float &floatValue, double &
             << "f" << std::endl;
   std::cout << "double: " << std::fixed << std::setprecision(1) << doubleValue
             << std::endl;
-}
-
-static void printCharLiteral(const std::string &literal)
-{
-  char charValue;
-  int intValue;
-  float floatValue;
-  double doubleValue;
-
-  charValue = literal[0];
-  intValue = static_cast<int>(charValue);
-  floatValue = static_cast<float>(charValue);
-  doubleValue = static_cast<double>(charValue);
-
-  printMsg(charValue, intValue, floatValue, doubleValue);
-
 }
 
 static void printSpecialLiteral(const std::string &literal)
@@ -94,53 +88,26 @@ static void printSpecialLiteral(const std::string &literal)
   std::cout << "float: " << floatValue << "f" << std::endl;
   std::cout << "double: " << doubleValue << std::endl;
 }
-
-static void printIntLiteral(long long &intValueLong)
-{
-  char charValue;
-  int intValue;
-  float floatValue;
-  double doubleValue;
-
-  intValue = static_cast<int>(intValueLong);
-  charValue = static_cast<char>(intValue);
-  floatValue = static_cast<float>(intValue);
-  doubleValue = static_cast<double>(intValue);
-
-  printMsg(charValue, intValue, floatValue, doubleValue);
-}
-
-static void printFloatLiteral(float &floatValue)
-{
-  char charValue;
-  int intValue;
-  double doubleValue;
-
-  intValue = static_cast<int>(floatValue);
-  charValue = static_cast<char>(intValue);
-  doubleValue = static_cast<double>(floatValue);
-
-  printMsg(charValue, intValue, floatValue, doubleValue);
-}
-
-static void printDoubleLiteral(double &doubleValue)
-{
-  char charValue;
-  int intValue;
-  float floatValue;
-
-  intValue = static_cast<int>(doubleValue);
-  charValue = static_cast<char>(intValue);
-  floatValue = static_cast<float>(doubleValue);
-
-  printMsg(charValue, intValue, floatValue, doubleValue);
-}
-
+//
+// static void printIntLiteral(const std::string &literal)
+// {
+//     char charValue;
+//     int intValue;
+//     float floatValue = 0.0;
+//     double doubleValue = 0.0;
+//
+// }
+//
 void ScalarConverter::convert(const std::string &literal)
 {
   try
   {
-    // Cases for char literal
+    char charValue;
+    int intValue;
+    float floatValue = 0.0;
+    double doubleValue = 0.0;
+
+	// Cases for char literal
     if (literal.length() == 1 && !std::isdigit(literal[0]))
     {
       printCharLiteral(literal);
@@ -161,23 +128,72 @@ void ScalarConverter::convert(const std::string &literal)
     if (*end == '\0' && intValueLong >= std::numeric_limits<int>::min() &&
         intValueLong <= std::numeric_limits<int>::max())
     {
-      printIntLiteral(intValueLong);
+		std::cout << "here" << std::endl;
+      intValue = static_cast<int>(intValueLong);
+      charValue = static_cast<char>(intValue);
+      floatValue = static_cast<float>(intValue);
+      doubleValue = static_cast<double>(intValue);
+
+      if (std::isprint(charValue))
+      {
+        std::cout << "char: '" << charValue << "'" << std::endl;
+      }
+      else
+      {
+        std::cout << "char: Non displayable" << std::endl;
+      }
+      std::cout << "int: " << intValue << std::endl;
+      std::cout << "float: " << std::fixed << std::setprecision(1) << floatValue
+                << "f" << std::endl;
+      std::cout << "double: " << std::fixed << std::setprecision(1)
+                << doubleValue << std::endl;
       return;
     }
 
     // cases for float literal
-    float floatValue = std::strtof(literal.c_str(), &end);
+    floatValue = std::strtof(literal.c_str(), &end);
     if (*end == 'f' && *(end + 1) == '\0')
     {
-      printFloatLiteral(floatValue);
+      intValue = static_cast<int>(floatValue);
+      charValue = static_cast<char>(intValue);
+      doubleValue = static_cast<double>(floatValue);
+      if (std::isprint(charValue))
+      {
+        std::cout << "char: '" << charValue << "'" << std::endl;
+      }
+      else
+      {
+        std::cout << "char: Non displayable" << std::endl;
+      }
+      std::cout << "int: " << intValue << std::endl;
+      std::cout << "float: " << std::fixed << std::setprecision(1) << floatValue
+                << "f" << std::endl;
+      std::cout << "double: " << std::fixed << std::setprecision(1)
+                << doubleValue << std::endl;
       return;
     }
 
     // cases for double literal
-    double doubleValue = std::strtod(literal.c_str(), &end);
-    if (*end == '\0' && literal.find('.') != std::string::npos)
+    doubleValue = std::strtod(literal.c_str(), &end);
+    if (*end == '\0')
     {
-      printDoubleLiteral(doubleValue);
+      intValue = static_cast<int>(doubleValue);
+      charValue = static_cast<char>(intValue);
+      floatValue = static_cast<float>(doubleValue);
+
+      if (std::isprint(charValue))
+      {
+        std::cout << "char: '" << charValue << "'" << std::endl;
+      }
+      else
+      {
+        std::cout << "char: Non displayable" << std::endl;
+      }
+      std::cout << "int: " << intValue << std::endl;
+      std::cout << "float: " << std::fixed << std::setprecision(1) << floatValue
+                << "f" << std::endl;
+      std::cout << "double: " << std::fixed << std::setprecision(1)
+                << doubleValue << std::endl;
       return;
     }
 
