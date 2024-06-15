@@ -6,7 +6,7 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 16:07:43 by llai              #+#    #+#             */
-/*   Updated: 2024/06/15 16:17:33 by llai             ###   ########.fr       */
+/*   Updated: 2024/06/15 16:36:43 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <exception>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 
 void ScalarConverter::convert(const std::string &literal)
 {
@@ -23,11 +24,12 @@ void ScalarConverter::convert(const std::string &literal)
   {
     char charValue;
     int intValue;
-    float floatValue;
-    double doubleValue;
+    float floatValue = 0.0;
+    double doubleValue = 0.0;
 
 	// std::cout << literal << " " << literal.length() << std::endl;
 	// if (literal.length() == 3 && literal[0] == '\'' && literal[2] == '\'')
+	// Case char literal
 	if (literal.length() == 1)
 	{
 		charValue = literal[1];
@@ -45,6 +47,47 @@ void ScalarConverter::convert(const std::string &literal)
 		}
 		std::cout << "int: " << intValue << std::endl;
 		std::cout << "float: " << std::fixed << std::setprecision(1) << floatValue << "f" << std::endl;
+		std::cout << "double: " << doubleValue << std::endl;
+		return ;
+	}
+
+	// Cases for special float/double literals
+	if (literal == "-inff" || literal == "+inff" || literal == "nanf" || literal == "-inf" || literal == "+inf" || literal == "nan")
+	{
+		if (literal == "nanf")
+		{
+			floatValue = std::numeric_limits<float>::quiet_NaN();
+			doubleValue = std::numeric_limits<double>::quiet_NaN();
+		}
+		else if (literal == "-inff")
+		{
+			floatValue = -std::numeric_limits<float>::infinity();
+			doubleValue = -std::numeric_limits<double>::infinity();
+		}
+		else if (literal == "+inff" || literal == "inff")
+		{
+			floatValue = std::numeric_limits<float>::infinity();
+			doubleValue = std::numeric_limits<double>::infinity();
+		}
+		else if (literal == "nan")
+		{
+			floatValue = std::numeric_limits<float>::quiet_NaN();
+			doubleValue = std::numeric_limits<double>::quiet_NaN();
+		}
+		else if (literal == "-inf")
+		{
+			floatValue = -std::numeric_limits<float>::infinity();
+			doubleValue = -std::numeric_limits<double>::infinity();
+		}
+		else if (literal == "+inf" || literal == "inf")
+		{
+			floatValue = std::numeric_limits<float>::infinity();
+			doubleValue = std::numeric_limits<double>::infinity();
+		}
+
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: " << floatValue << "f" << std::endl;
 		std::cout << "double: " << doubleValue << std::endl;
 		return ;
 	}
