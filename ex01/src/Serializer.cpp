@@ -6,13 +6,14 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 20:52:04 by llai              #+#    #+#             */
-/*   Updated: 2024/06/15 20:53:01 by llai             ###   ########.fr       */
+/*   Updated: 2024/06/17 14:37:16 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Serializer.hpp"
 
-#include <cstdint>
+// #include <cstdint>
+#include <stdint.h>
 
 uintptr_t Serializer::serialize(Data *ptr)
 {

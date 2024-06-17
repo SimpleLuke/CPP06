@@ -6,14 +6,15 @@
 /*   By: llai <llai@student.42london.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 20:48:20 by llai              #+#    #+#             */
-/*   Updated: 2024/06/15 20:51:48 by llai             ###   ########.fr       */
+/*   Updated: 2024/06/17 14:36:23 by llai             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERIALIZER_HPP
 #define SERIALIZER_HPP
 
-#include <cstdint>
+// #include <cstdint>
+#include <stdint.h>
 #include "Data.hpp"
 
 class Serializer {
